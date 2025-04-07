@@ -1,0 +1,43 @@
+# Documentation
+technical-design.md
+
+# Build artifacts
+DerivedData/
+Build/
+
+# Xcode project files
+*.xcodeproj/project.xcworkspace
+*.xcodeproj/xcuserdata/
+*.xcworkspace/shareddata
+*.xcworkspace/xcuserdata/
+
+# Swift Package Manager
+.build/
+Packages/
+*.resolved
+
+# Cocoapods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Secrets (if any, e.g., API keys in files)
+.env
+secrets.plist
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db 
