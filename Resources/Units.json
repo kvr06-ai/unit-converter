@@ -1,0 +1,58 @@
+[
+  {
+    "categoryName": "Length",
+    "units": [
+      {"unitName": "Meter", "unitSymbol": "m", "conversionFactor": 1.0, "isBase": true},
+      {"unitName": "Kilometer", "unitSymbol": "km", "conversionFactor": 1000.0},
+      {"unitName": "Centimeter", "unitSymbol": "cm", "conversionFactor": 0.01},
+      {"unitName": "Millimeter", "unitSymbol": "mm", "conversionFactor": 0.001},
+      {"unitName": "Mile", "unitSymbol": "mi", "conversionFactor": 1609.34},
+      {"unitName": "Yard", "unitSymbol": "yd", "conversionFactor": 0.9144},
+      {"unitName": "Foot", "unitSymbol": "ft", "conversionFactor": 0.3048},
+      {"unitName": "Inch", "unitSymbol": "in", "conversionFactor": 0.0254}
+    ]
+  },
+  {
+    "categoryName": "Mass",
+    "units": [
+      {"unitName": "Kilogram", "unitSymbol": "kg", "conversionFactor": 1.0, "isBase": true},
+      {"unitName": "Gram", "unitSymbol": "g", "conversionFactor": 0.001},
+      {"unitName": "Milligram", "unitSymbol": "mg", "conversionFactor": 1e-6},
+      {"unitName": "Metric Ton", "unitSymbol": "t", "conversionFactor": 1000.0},
+      {"unitName": "Pound", "unitSymbol": "lb", "conversionFactor": 0.453592},
+      {"unitName": "Ounce", "unitSymbol": "oz", "conversionFactor": 0.0283495}
+    ]
+  },
+  {
+    "categoryName": "Temperature",
+    "units": [
+      {"unitName": "Celsius", "unitSymbol": "°C", "conversionFactor": 1.0, "offset": 0.0, "isBase": true},
+      {"unitName": "Fahrenheit", "unitSymbol": "°F", "conversionFactor": 0.5555555555555556, "offset": -32.0},
+      {"unitName": "Kelvin", "unitSymbol": "K", "conversionFactor": 1.0, "offset": -273.15}
+    ]
+  },
+   {
+    "categoryName": "Volume",
+    "units": [
+        {"unitName": "Liter", "unitSymbol": "L", "conversionFactor": 1.0, "isBase": true},
+        {"unitName": "Milliliter", "unitSymbol": "mL", "conversionFactor": 0.001},
+        {"unitName": "US Gallon", "unitSymbol": "gal", "conversionFactor": 3.78541},
+        {"unitName": "US Quart", "unitSymbol": "qt", "conversionFactor": 0.946353},
+        {"unitName": "US Pint", "unitSymbol": "pt", "conversionFactor": 0.473176},
+        {"unitName": "US Cup", "unitSymbol": "cup", "conversionFactor": 0.236588},
+        {"unitName": "US Fluid Ounce", "unitSymbol": "fl oz", "conversionFactor": 0.0295735},
+        {"unitName": "US Table Spoon", "unitSymbol": "tbsp", "conversionFactor": 0.0147868},
+        {"unitName": "US Tea Spoon", "unitSymbol": "tsp", "conversionFactor": 0.00492892}
+    ]
+   },
+   {
+    "categoryName": "Speed",
+    "units": [
+        {"unitName": "Meters per second", "unitSymbol": "m/s", "conversionFactor": 1.0, "isBase": true},
+        {"unitName": "Kilometers per hour", "unitSymbol": "km/h", "conversionFactor": 0.277778},
+        {"unitName": "Miles per hour", "unitSymbol": "mph", "conversionFactor": 0.44704},
+        {"unitName": "Feet per second", "unitSymbol": "ft/s", "conversionFactor": 0.3048},
+        {"unitName": "Knots", "unitSymbol": "kn", "conversionFactor": 0.514444}
+    ]
+   }
+] 
