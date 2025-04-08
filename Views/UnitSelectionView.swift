@@ -93,25 +93,18 @@ struct UnitSelectionView: View {
 struct UnitSelectionView_Previews: PreviewProvider {
     // Sample data for preview
     static let previewCategories: [UnitCategory] = UnitDataStore.shared.categories // Use real data store for preview
-    @State static var previewSelectedCategory: UnitCategory? = previewCategories.first // Start with Length selected
-    static let previewAvailableUnits: [UnitDefinition] = previewSelectedCategory?.units ?? []
-    static let previewSelectedUnit: UnitDefinition? = previewAvailableUnits.first // Meter
+    @State static var previewSelectedCategory: UnitCategory? = previewCategories.first // Start with first category if available
 
     static var previews: some View {
-        // Ensure selectedCategory has a value for the preview list to populate
-        // This setup can be tricky, might need refinement based on exact interaction.
-         // If previewSelectedCategory starts as nil, the list might be empty initially.
-        if previewSelectedCategory == nil && !previewCategories.isEmpty {
-             // Initialize category for preview if needed
-             previewSelectedCategory = previewCategories.first
-        }
-
+        // Get units based on the current state of previewSelectedCategory for the preview instance
+        let currentUnits = previewSelectedCategory?.units ?? []
+        let currentUnit = currentUnits.first
 
         UnitSelectionView(
             allCategories: previewCategories,
-            availableUnits: previewSelectedCategory?.units ?? [], // Dynamically update based on picker
+            availableUnits: currentUnits, // Use units based on the @State variable
             selectedCategory: $previewSelectedCategory, // Pass the binding
-            currentlySelectedUnit: previewSelectedUnit,
+            currentlySelectedUnit: currentUnit, // Use first unit of selected category
             onUnitSelected: { selectedUnit in
                 print("Preview: Unit selected - \(selectedUnit.unitName)")
             }
