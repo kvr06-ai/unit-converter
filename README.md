@@ -5,18 +5,7 @@
 [![Architecture](https://img.shields.io/badge/Architecture-MVVM-green.svg)](#architecture)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE) <!-- Optional: Add a LICENSE file -->
 
-A simple, elegant, and fast unit conversion utility designed for iOS, built purely with SwiftUI.
-
-## Philosophy
-
-The core goal is to be the *best* unit converter on the App Store by focusing on:
-
-*   **Simplicity:** An intuitive interface anyone can use immediately.
-*   **Speed:** Instantaneous conversions and a responsive UI.
-*   **Accuracy:** Reliable conversion factors.
-*   **Elegance:** Clean, modern design following iOS principles.
-*   **Offline First:** Fully functional without an internet connection.
-*   **Privacy:** Absolutely no user data collection or network calls.
+A simple and fast unit conversion utility designed for iOS, built purely with SwiftUI.
 
 ## Features (v1.0)
 
