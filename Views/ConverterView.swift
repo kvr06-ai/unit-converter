@@ -1,6 +1,6 @@
 // app-development/unit-converter/Views/ConverterView.swift
 import SwiftUI
-import Combine // Needed for keyboard handling publisher
+import Combine // Needed for keyboard handling publisher and Publishers.Just
 
 struct ConverterView: View {
     // Use @StateObject to create and keep the ViewModel alive for the lifetime of the view
@@ -24,7 +24,11 @@ struct ConverterView: View {
                 // MARK: - Input Section
                 Section(header: Text("From")) {
                     HStack {
-                        TextField("Enter value", text: $viewModel.inputValueString)
+                        // Use a manual binding that calls updateInputValue on change
+                        TextField("Enter value", text: Binding(
+                            get: { viewModel.inputValueString },
+                            set: { viewModel.updateInputValue($0) }
+                        ))
                             .font(.system(size: 24, weight: .regular)) // Larger font for value
                             .keyboardType(.decimalPad)
                             .focused($inputIsFocused)
@@ -37,7 +41,6 @@ struct ConverterView: View {
                                 }
                             }
                             .accessibilityLabel("Input value")
-
 
                         Spacer() // Pushes unit selector to the right
 
