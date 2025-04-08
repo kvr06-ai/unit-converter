@@ -40,7 +40,7 @@ struct UnitSelectionView: View {
                  .pickerStyle(.menu) // Or .segmented for fewer categories
                  .padding(.horizontal)
                  .padding(.bottom, 5)
-                 .onChange(of: selectedCategory) { _ in
+                 .onChange(of: selectedCategory) {
                      // Reset search when category changes
                      searchText = ""
                  }
@@ -82,7 +82,8 @@ struct UnitSelectionView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search Units") // Add search bar
+            // Try using automatic placement for the search bar
+            .searchable(text: $searchText, placement: .automatic, prompt: "Search Units")
 
         } // End NavigationView
     }

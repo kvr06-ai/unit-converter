@@ -251,8 +251,5 @@ class ConverterViewModel: ObservableObject {
                  selectedOutputUnit = category.units[1] // Change output to second unit
             }
         }
-
-
-        print("Loaded Prefs: Cat=\(selectedCategory?.categoryName ?? "nil"), In=\(selectedInputUnit?.unitSymbol ?? "nil"), Out=\(selectedOutputUnit?.unitSymbol ?? "nil")")
     }
 } 
