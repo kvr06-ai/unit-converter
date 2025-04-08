@@ -144,7 +144,7 @@ class ConverterViewModel: ObservableObject {
 
 
     // MARK: - Core Logic
-    private func performConversion() {
+    func performConversion() {
         guard let value = inputValue,
               let inputUnit = selectedInputUnit,
               let outputUnit = selectedOutputUnit else {
