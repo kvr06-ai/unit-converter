@@ -1,17 +1,24 @@
 // app-development/unit-converter/Views/ConverterView.swift
 import SwiftUI
 import Combine // Needed for keyboard handling publisher and Publishers.Just
+import os.log
 
 struct ConverterView: View {
+    // Logger for UI events and performance tracking
+    private let logger = Logger(subsystem: "com.converter.app", category: "ConverterView")
+    
     // Use @StateObject to create and keep the ViewModel alive for the lifetime of the view
     @StateObject private var viewModel = ConverterViewModel()
     @FocusState private var inputIsFocused: Bool // To control keyboard focus
     @State private var showCopied: Bool = false // For copy feedback animation
+    
+    // Track when view appears for performance monitoring
+    @State private var viewDidAppear = false
 
     var body: some View {
         NavigationView {
             // Replace Form with a VStack for more control over spacing
-            VStack(spacing: 16) {
+            VStack(spacing: 16) {                
                 // Category selection with horizontal scrolling chips
                 CategorySelector(viewModel: viewModel)
                     .padding(.horizontal)
@@ -31,9 +38,13 @@ struct ConverterView: View {
                                 .background(Color(.systemGray6))
                                 .cornerRadius(10)
                                 .accessibilityLabel("Input value")
+                                .onChange(of: inputIsFocused) { newValue in
+                                    logger.debug("Input field focus changed: \(newValue)")
+                                }
                             
                             if !viewModel.inputValueString.isEmpty {
                                 Button(action: {
+                                    logger.debug("Clear input button tapped")
                                     viewModel.clearInput()
                                 }) {
                                     Image(systemName: "xmark.circle.fill")
@@ -49,7 +60,7 @@ struct ConverterView: View {
                         HStack {
                             Picker("From Unit", selection: $viewModel.fromUnit) {
                                 ForEach(viewModel.availableUnits) { unit in
-                                    Text(unit.unitSymbol).tag(unit)
+                                    Text(unit.unitSymbol).tag(unit as UnitDefinition?)
                                 }
                             }
                             .pickerStyle(MenuPickerStyle())
@@ -109,7 +120,7 @@ struct ConverterView: View {
                         HStack {
                             Picker("To Unit", selection: $viewModel.toUnit) {
                                 ForEach(viewModel.availableUnits) { unit in
-                                    Text(unit.unitSymbol).tag(unit)
+                                    Text(unit.unitSymbol).tag(unit as UnitDefinition?)
                                 }
                             }
                             .pickerStyle(MenuPickerStyle())
@@ -129,6 +140,7 @@ struct ConverterView: View {
                 
                 // Swap Units button
                 Button(action: {
+                    logger.debug("Swap units button tapped")
                     viewModel.swapUnits()
                 }) {
                     Label("Swap Units", systemImage: "arrow.left.arrow.right")
@@ -143,6 +155,7 @@ struct ConverterView: View {
                 
                 // Copy button with animation feedback
                 Button(action: {
+                    logger.debug("Copy result button tapped")
                     UIPasteboard.general.string = viewModel.outputValueString
                     
                     // Show and hide the "Copied!" message
@@ -175,6 +188,13 @@ struct ConverterView: View {
                 Spacer()
             }
             .navigationTitle("Unit Converter")
+            .onTapGesture {
+                // Dismiss keyboard when tapping anywhere in the main content area
+                if inputIsFocused {
+                    logger.debug("Main content tapped, dismissing keyboard")
+                    inputIsFocused = false
+                }
+            }
             // Present the Unit Selection View as a sheet
             .sheet(isPresented: $viewModel.showingUnitSelector) {
                 // Pass the necessary data and actions to the selection view
@@ -192,10 +212,18 @@ struct ConverterView: View {
             }
         } // End NavigationView
         .navigationViewStyle(.stack) // Use stack style for consistency on iPhone
-        // Add a tap gesture to the entire view to dismiss keyboard
-        .contentShape(Rectangle()) 
-        .onTapGesture {
-            inputIsFocused = false
+        .onAppear {
+            if !viewDidAppear {
+                let startTime = Date()
+                logger.debug("ConverterView appeared")
+                viewDidAppear = true
+                
+                // Wait for UI to settle, then log performance
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    let timeElapsed = Date().timeIntervalSince(startTime)
+                    logger.debug("ConverterView fully rendered in \(timeElapsed) seconds")
+                }
+            }
         }
     }
 }
