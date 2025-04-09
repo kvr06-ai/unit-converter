@@ -12,7 +12,7 @@ struct MultiResultView: View {
     var body: some View {
         NavigationView {
             List {
-                if let inputUnit = inputUnit, !inputValue.isEmpty, let inputValueDouble = Double(inputValue) {
+                if let inputUnit = inputUnit, !inputValue.isEmpty, Double(inputValue) != nil {
                     Section(header: Text("Input Value")) {
                         HStack {
                             Text(inputValue)

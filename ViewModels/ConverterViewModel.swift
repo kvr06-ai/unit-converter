@@ -216,7 +216,7 @@ class ConverterViewModel: ObservableObject {
         updateAvailableUnits()
         
         // Before setting new unit values, check if the current units are valid for the new category
-        if let category = selectedCategory {
+        if selectedCategory != nil {
             var shouldPerformConversion = false
             
             // Check and update fromUnit if needed
