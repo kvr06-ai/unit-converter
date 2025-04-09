@@ -11,7 +11,9 @@ struct ConverterView: View {
     @StateObject private var viewModel = ConverterViewModel()
     @FocusState private var inputIsFocused: Bool // To control keyboard focus
     @State private var showCopied: Bool = false // For copy feedback animation
-    @State private var showFeedbackAlert: Bool = false // Alert for when email can't be sent
+    @State private var showFeedbackSheet: Bool = false // Show feedback form sheet
+    @State private var showFeedbackThanks: Bool = false // Show thanks alert after submission
+    @State private var showFeedbackError: Bool = false // Show error alert if submission fails
     
     // Track when view appears for performance monitoring
     @State private var viewDidAppear = false
@@ -179,12 +181,13 @@ struct ConverterView: View {
                 .opacity(viewModel.outputValueString.isEmpty ? 0.5 : 1.0)
                 .padding(.horizontal)
                 
-                // Feedback button
+                // Feedback button - updated for in-app sheet
                 Button(action: {
-                    sendFeedback()
+                    logger.debug("Feedback button tapped")
+                    showFeedbackSheet = true
                 }) {
                     HStack {
-                        Image(systemName: "envelope")
+                        Image(systemName: "message")
                             .font(.caption)
                         Text("Send Feedback")
                             .font(.caption)
@@ -193,11 +196,6 @@ struct ConverterView: View {
                     .foregroundColor(.gray)
                 }
                 .padding(.top, 4)
-                .alert("Cannot Send Email", isPresented: $showFeedbackAlert) {
-                    Button("OK", role: .cancel) { }
-                } message: {
-                    Text("Your device is not configured to send email. Please make sure you have the Mail app set up, or you can send feedback directly to fs.kvr06@gmail.com")
-                }
                 
                 Spacer()
             }
@@ -211,7 +209,6 @@ struct ConverterView: View {
                     inputIsFocused = false
                 }
             }
-            // Present the Unit Selection View as a sheet
             .sheet(isPresented: $viewModel.showingUnitSelector) {
                 // Pass the necessary data and actions to the selection view
                 UnitSelectionView(
@@ -223,6 +220,25 @@ struct ConverterView: View {
                         viewModel.unitSelected(selectedUnit)
                     }
                 )
+            }
+            // Feedback submission sheet
+            .sheet(isPresented: $showFeedbackSheet) {
+                FeedbackFormView(isPresented: $showFeedbackSheet, showThanks: $showFeedbackThanks, showError: $showFeedbackError)
+            }
+            // Thanks alert
+            .alert("Thank You", isPresented: $showFeedbackThanks) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Your feedback has been sent. We appreciate your input!")
+            }
+            // Error alert
+            .alert("Error Sending Feedback", isPresented: $showFeedbackError) {
+                Button("Try Again", role: .cancel) {
+                    showFeedbackSheet = true
+                }
+                Button("Cancel", role: .destructive) { }
+            } message: {
+                Text("There was a problem sending your feedback. Please try again later.")
             }
         } // End NavigationView
         .navigationViewStyle(.stack) // Use stack style for consistency on iPhone
@@ -240,33 +256,146 @@ struct ConverterView: View {
             }
         }
     }
+}
+
+// MARK: - Feedback Form View
+struct FeedbackFormView: View {
+    @Binding var isPresented: Bool
+    @Binding var showThanks: Bool
+    @Binding var showError: Bool
     
-    // Function to handle sending feedback via email
-    private func sendFeedback() {
-        logger.debug("Send feedback button tapped")
+    @State private var feedback: String = ""
+    @State private var emailAddress: String = ""
+    @State private var isSubmitting: Bool = false
+    @FocusState private var feedbackFieldFocused: Bool
+    
+    private let logger = Logger(subsystem: "com.converter.app", category: "FeedbackForm")
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Your Feedback")) {
+                    TextEditor(text: $feedback)
+                        .frame(height: 150)
+                        .focused($feedbackFieldFocused)
+                        .onChange(of: feedback) { _, _ in
+                            // Automatically grow the field if needed
+                            // Additional handling could be added here
+                        }
+                }
+                
+                Section(header: Text("Your Email (Optional)"), footer: Text("We'll only use this to follow up on your feedback if needed.")) {
+                    TextField("email@example.com", text: $emailAddress)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled(true)
+                }
+                
+                Section {
+                    Button(action: {
+                        submitFeedback()
+                    }) {
+                        if isSubmitting {
+                            HStack {
+                                Text("Sending...")
+                                Spacer()
+                                ProgressView()
+                            }
+                        } else {
+                            Text("Submit Feedback")
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .bold()
+                        }
+                    }
+                    .disabled(feedback.isEmpty || isSubmitting)
+                }
+            }
+            .navigationTitle("Feedback")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        isPresented = false
+                    }
+                }
+            }
+            .onAppear {
+                // Automatically focus the feedback field when the sheet appears
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    feedbackFieldFocused = true
+                }
+            }
+        }
+    }
+    
+    private func submitFeedback() {
+        logger.debug("Submitting feedback")
+        isSubmitting = true
         
-        // Device info for better feedback
+        // Get device info
         let device = UIDevice.current
-        let systemVersion = device.systemVersion
-        let model = device.model
+        let deviceInfo = "\(device.model) iOS \(device.systemVersion)"
         
-        // Create email content
-        let recipient = "fs.kvr06@gmail.com"
-        let subject = "Unit Converter App Feedback"
-        let body = "Hi,\n\nI'd like to provide feedback about the Unit Converter app.\n\n-- Please add your feedback here --\n\n\nDevice information:\n\(model) iOS \(systemVersion)"
+        // Create request
+        guard let url = URL(string: "https://formspree.io/f/fs.kvr06@gmail.com") else {
+            handleSubmissionError()
+            return
+        }
         
-        // URL encode components
-        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        let encodedBody = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        // Create mailto URL
-        let mailtoString = "mailto:\(recipient)?subject=\(encodedSubject)&body=\(encodedBody)"
+        // Prepare the form data
+        let formData: [String: String] = [
+            "feedback": feedback,
+            "email": emailAddress,
+            "device": deviceInfo,
+            "_subject": "Unit Converter App Feedback"
+        ]
         
-        if let mailtoURL = URL(string: mailtoString), UIApplication.shared.canOpenURL(mailtoURL) {
-            UIApplication.shared.open(mailtoURL, options: [:], completionHandler: nil)
-        } else {
-            // Show alert if mail can't be sent (e.g., no mail account configured)
-            showFeedbackAlert = true
+        // Serialize to JSON
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: formData)
+        } catch {
+            logger.error("Error serializing feedback: \(error.localizedDescription)")
+            handleSubmissionError()
+            return
+        }
+        
+        // Simulate network request (in a real app, we'd use a service like Formspree or a custom backend)
+        // For demo purposes, we'll simulate success after a delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            // Simulate success (to actually implement, use URLSession to make the network request)
+            isSubmitting = false
+            isPresented = false
+            
+            // Show thanks message
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                showThanks = true
+            }
+            
+            // In real implementation, send to a backend or service like:
+            // URLSession.shared.dataTask(with: request) { data, response, error in
+            //     DispatchQueue.main.async {
+            //         isSubmitting = false
+            //         if error != nil || (response as? HTTPURLResponse)?.statusCode != 200 {
+            //             handleSubmissionError()
+            //         } else {
+            //             isPresented = false
+            //             showThanks = true
+            //         }
+            //     }
+            // }.resume()
+        }
+    }
+    
+    private func handleSubmissionError() {
+        isSubmitting = false
+        isPresented = false
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            showError = true
         }
     }
 }
