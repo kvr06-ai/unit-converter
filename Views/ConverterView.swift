@@ -233,38 +233,4 @@ struct ConverterView: View {
     ConverterView()
 }
 
-// MARK: - Helper Components
-
-// Horizontal scrollable category selector with chips
-struct CategorySelector: View {
-    @ObservedObject var viewModel: ConverterViewModel
-    
-    var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(viewModel.categories) { category in
-                    Button(action: {
-                        viewModel.selectedCategory = category
-                    }) {
-                        Text(category.name)
-                            .font(.system(size: 15, weight: .medium))
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 16)
-                            .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(isSelected(category) ? Color.accentColor : Color.gray.opacity(0.15))
-                            )
-                            .foregroundColor(isSelected(category) ? .white : .primary)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    .animation(.easeInOut(duration: 0.2), value: isSelected(category))
-                }
-            }
-            .padding(.vertical, 8)
-        }
-    }
-    
-    private func isSelected(_ category: Category) -> Bool {
-        return viewModel.selectedCategory?.id == category.id
-    }
-} 
+// Previous duplicate CategorySelector has been removed as it's now in its own file 
