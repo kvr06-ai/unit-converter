@@ -137,10 +137,10 @@ enum ConversionDirection {
 
 struct UnitSelector_Previews: PreviewProvider {
     static let sampleUnits: [UnitDefinition] = [
-        UnitDefinition(unitName: "Meters", unitSymbol: "m", conversionFactor: 1.0, offset: nil, isBase: true, description: "Base unit of length in SI"),
-        UnitDefinition(unitName: "Kilometers", unitSymbol: "km", conversionFactor: 1000.0, offset: nil, isBase: false, description: "1000 meters"),
-        UnitDefinition(unitName: "Centimeters", unitSymbol: "cm", conversionFactor: 0.01, offset: nil, isBase: false, description: "0.01 meters"),
-        UnitDefinition(unitName: "Millimeters", unitSymbol: "mm", conversionFactor: 0.001, offset: nil, isBase: false, description: "0.001 meters")
+        UnitDefinition(unitName: "Meters", unitSymbol: "m", conversionFactor: 1.0, offset: nil, isBase: true, description: "Base unit of length in SI", isInverse: false),
+        UnitDefinition(unitName: "Kilometers", unitSymbol: "km", conversionFactor: 1000.0, offset: nil, isBase: false, description: "1000 meters", isInverse: false),
+        UnitDefinition(unitName: "Centimeters", unitSymbol: "cm", conversionFactor: 0.01, offset: nil, isBase: false, description: "0.01 meters", isInverse: false),
+        UnitDefinition(unitName: "Millimeters", unitSymbol: "mm", conversionFactor: 0.001, offset: nil, isBase: false, description: "0.001 meters", isInverse: false)
     ]
     
     static var previews: some View {

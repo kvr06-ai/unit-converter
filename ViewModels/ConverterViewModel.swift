@@ -17,6 +17,7 @@ class ConverterViewModel: ObservableObject {
     // MARK: - Published State Properties (for UI binding)
     @Published var inputValueString: String = ""
     @Published var outputValueString: String = ""
+    @Published var categoryGroups: [CategoryGroupViewModel] = []
     @Published var categories: [Category] = []
     @Published var selectedCategory: Category? {
         didSet {
@@ -45,6 +46,10 @@ class ConverterViewModel: ObservableObject {
             }
         }
     }
+
+    // Multi-unit results
+    @Published var conversionResults: [ConversionResult] = []
+    @Published var showingMultiResults: Bool = false
 
     // State for presenting the unit selection sheet
     @Published var showingUnitSelector: Bool = false
@@ -152,34 +157,55 @@ class ConverterViewModel: ObservableObject {
         let startTime = Date()
         logger.debug("Starting conversion calculation")
         
-        guard let value = Double(inputValueString), !inputValueString.isEmpty else {
-            logger.debug("Invalid input value, clearing output")
-            outputValueString = "" // Clear output if input is invalid or units not set
+        // Validate required data
+        guard let from = fromUnit, let to = toUnit else {
+            logger.debug("Cannot perform conversion: missing units")
+            outputValueString = ""
+            conversionResults = []
             return
         }
-
-        // Ensure units are from the same category (should be guaranteed by UI flow)
-        if let category = selectedCategory,
-           let fromUnit = fromUnit,
-           let toUnit = toUnit,
-           category.units.contains(where: {$0.id == fromUnit.id}),
-           category.units.contains(where: {$0.id == toUnit.id}) {
-
-            logger.debug("Converting \(value) from \(fromUnit.unitName) to \(toUnit.unitName)")
-            if let result = conversionEngine.convert(value: value, from: fromUnit, to: toUnit) {
-                outputValueString = formatValue(result)
-                logger.debug("Conversion result: \(result)")
+        
+        // Check for empty input
+        if inputValueString.isEmpty {
+            logger.debug("Empty input value, clearing output")
+            outputValueString = ""
+            conversionResults = []
+            return
+        }
+        
+        // Parse the input value
+        guard let inputValue = Double(inputValueString) else {
+            logger.debug("Invalid input value, clearing output")
+            outputValueString = ""
+            conversionResults = []
+            return
+        }
+        
+        // Perform the conversion
+        if let result = conversionEngine.convert(value: inputValue, from: from, to: to) {
+            logger.debug("Conversion successful: \(result)")
+            
+            // Format the output value based on its magnitude
+            if abs(result) < 0.0001 || abs(result) > 100000 {
+                outputValueString = String(format: "%.5e", result)
+            } else if abs(result - Double(Int(result))) < 0.00001 {
+                outputValueString = String(format: "%.0f", result)
             } else {
-                outputValueString = "Error" // Indicate conversion failure
-                logger.error("Conversion failed")
+                outputValueString = String(format: "%.5g", result)
+            }
+            
+            // Generate multi-unit results
+            if let category = selectedCategory {
+                conversionResults = conversionEngine.convertToAllUnits(value: inputValue, from: from, units: category.units)
             }
         } else {
-             outputValueString = "Error" // Indicate incompatible units (shouldn't happen ideally)
-             logger.error("Incompatible units for conversion")
+            logger.debug("Conversion failed")
+            outputValueString = "Error"
+            conversionResults = []
         }
         
         let timeElapsed = Date().timeIntervalSince(startTime)
-        logger.debug("Conversion completed in \(timeElapsed) seconds")
+        logger.debug("Conversion calculation completed in \(timeElapsed) seconds")
     }
     
     private func updateForCategoryChange() async {
@@ -331,15 +357,21 @@ class ConverterViewModel: ObservableObject {
         let startTime = Date()
         logger.debug("Setting up categories")
         
-        // Get categories from UnitDataStore
-        let dataStoreCategories = UnitDataStore.shared.categories
+        // Get category groups from UnitDataStore
+        let dataStoreCategoryGroups = UnitDataStore.shared.categoryGroups
         
-        // Convert UnitCategory to Category for our ViewModel
-        categories = dataStoreCategories.map { unitCategory in
-            Category(id: unitCategory.id, name: unitCategory.categoryName, iconName: getCategoryIcon(for: unitCategory.categoryName), units: unitCategory.units)
+        // Convert CategoryGroup to CategoryGroupViewModel
+        categoryGroups = dataStoreCategoryGroups.map { categoryGroup in
+            let groupCategories = categoryGroup.categories.map { unitCategory in
+                Category(id: unitCategory.id, name: unitCategory.categoryName, iconName: getCategoryIcon(for: unitCategory.categoryName), units: unitCategory.units)
+            }
+            return CategoryGroupViewModel(name: categoryGroup.categoryGroup, categories: groupCategories)
         }
         
-        logger.debug("Set up \(self.categories.count) categories")
+        // Flatten categories for backward compatibility
+        categories = categoryGroups.flatMap { $0.categories }
+        
+        logger.debug("Set up \(self.categories.count) categories in \(self.categoryGroups.count) groups")
         
         // Default to first category
         if let firstCategory = categories.first {
@@ -386,9 +418,20 @@ class ConverterViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+
+    // Toggle multi-results view
+    func toggleMultiResults() {
+        showingMultiResults.toggle()
+    }
 }
 
 // MARK: - Models
+
+struct CategoryGroupViewModel: Identifiable {
+    var id: String { name }
+    let name: String
+    let categories: [Category]
+}
 
 struct Category: Identifiable, Hashable {
     let id: String

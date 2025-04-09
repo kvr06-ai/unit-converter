@@ -1,58 +1,258 @@
 [
   {
-    "categoryName": "Length",
-    "units": [
-      {"unitName": "Meter", "unitSymbol": "m", "conversionFactor": 1.0, "isBase": true, "description": "The base unit of length in the International System of Units (SI)"},
-      {"unitName": "Kilometer", "unitSymbol": "km", "conversionFactor": 1000.0, "description": "Equal to 1000 meters, commonly used for measuring distances between geographical locations"},
-      {"unitName": "Centimeter", "unitSymbol": "cm", "conversionFactor": 0.01, "description": "Equal to one hundredth of a meter"},
-      {"unitName": "Millimeter", "unitSymbol": "mm", "conversionFactor": 0.001, "description": "Equal to one thousandth of a meter"},
-      {"unitName": "Mile", "unitSymbol": "mi", "conversionFactor": 1609.34, "description": "An imperial and US customary unit of length"},
-      {"unitName": "Yard", "unitSymbol": "yd", "conversionFactor": 0.9144, "description": "Equal to 3 feet or 36 inches"},
-      {"unitName": "Foot", "unitSymbol": "ft", "conversionFactor": 0.3048, "description": "Equal to 12 inches, derived from the human foot"},
-      {"unitName": "Inch", "unitSymbol": "in", "conversionFactor": 0.0254, "description": "The smallest traditional unit of length in imperial and US customary systems"}
+    "categoryGroup": "BASIC",
+    "categories": [
+      {
+        "categoryName": "Length",
+        "iconName": "ruler",
+        "units": [
+          {"unitName": "Meter", "unitSymbol": "m", "conversionFactor": 1.0, "isBase": true, "description": "The base unit of length in the International System of Units (SI)"},
+          {"unitName": "Kilometer", "unitSymbol": "km", "conversionFactor": 1000.0, "description": "Equal to 1000 meters, commonly used for measuring distances between geographical locations"},
+          {"unitName": "Centimeter", "unitSymbol": "cm", "conversionFactor": 0.01, "description": "Equal to one hundredth of a meter"},
+          {"unitName": "Millimeter", "unitSymbol": "mm", "conversionFactor": 0.001, "description": "Equal to one thousandth of a meter"},
+          {"unitName": "Micrometer", "unitSymbol": "μm", "conversionFactor": 0.000001, "description": "Equal to one millionth of a meter"},
+          {"unitName": "Nanometer", "unitSymbol": "nm", "conversionFactor": 1e-9, "description": "Equal to one billionth of a meter"},
+          {"unitName": "Mile", "unitSymbol": "mi", "conversionFactor": 1609.34, "description": "An imperial and US customary unit of length"},
+          {"unitName": "Yard", "unitSymbol": "yd", "conversionFactor": 0.9144, "description": "Equal to 3 feet or 36 inches"},
+          {"unitName": "Foot", "unitSymbol": "ft", "conversionFactor": 0.3048, "description": "Equal to 12 inches, derived from the human foot"},
+          {"unitName": "Inch", "unitSymbol": "in", "conversionFactor": 0.0254, "description": "The smallest traditional unit of length in imperial and US customary systems"},
+          {"unitName": "Nautical Mile", "unitSymbol": "nmi", "conversionFactor": 1852.0, "description": "Used in marine navigation, equal to 1.852 kilometers"}
+        ]
+      },
+      {
+        "categoryName": "Mass",
+        "iconName": "scalemass",
+        "units": [
+          {"unitName": "Kilogram", "unitSymbol": "kg", "conversionFactor": 1.0, "isBase": true, "description": "The base unit of mass in the International System of Units (SI)"},
+          {"unitName": "Gram", "unitSymbol": "g", "conversionFactor": 0.001, "description": "Equal to one thousandth of a kilogram"},
+          {"unitName": "Milligram", "unitSymbol": "mg", "conversionFactor": 1e-6, "description": "Equal to one thousandth of a gram"},
+          {"unitName": "Microgram", "unitSymbol": "μg", "conversionFactor": 1e-9, "description": "Equal to one millionth of a gram"},
+          {"unitName": "Metric Ton", "unitSymbol": "t", "conversionFactor": 1000.0, "description": "Equal to 1000 kilograms, used for measuring large masses"},
+          {"unitName": "Pound", "unitSymbol": "lb", "conversionFactor": 0.453592, "description": "An imperial and US customary unit of mass"},
+          {"unitName": "Ounce", "unitSymbol": "oz", "conversionFactor": 0.0283495, "description": "Equal to one sixteenth of a pound"},
+          {"unitName": "Stone", "unitSymbol": "st", "conversionFactor": 6.35029, "description": "Equal to 14 pounds, commonly used in the UK for body weight"},
+          {"unitName": "US Ton", "unitSymbol": "ton (US)", "conversionFactor": 907.185, "description": "Also known as short ton, equal to 2000 pounds"},
+          {"unitName": "UK Ton", "unitSymbol": "ton (UK)", "conversionFactor": 1016.05, "description": "Also known as long ton, equal to 2240 pounds"},
+          {"unitName": "Carat", "unitSymbol": "ct", "conversionFactor": 0.0002, "description": "Used for gemstones, equal to 200 milligrams"}
+        ]
+      },
+      {
+        "categoryName": "Area",
+        "iconName": "square.on.square",
+        "units": [
+          {"unitName": "Square Meter", "unitSymbol": "m²", "conversionFactor": 1.0, "isBase": true, "description": "The SI derived unit of area"},
+          {"unitName": "Square Kilometer", "unitSymbol": "km²", "conversionFactor": 1000000.0, "description": "Equal to one million square meters"},
+          {"unitName": "Square Centimeter", "unitSymbol": "cm²", "conversionFactor": 0.0001, "description": "Equal to one ten-thousandth of a square meter"},
+          {"unitName": "Square Millimeter", "unitSymbol": "mm²", "conversionFactor": 0.000001, "description": "Equal to one millionth of a square meter"},
+          {"unitName": "Square Mile", "unitSymbol": "mi²", "conversionFactor": 2589988.11, "description": "Equal to 640 acres"},
+          {"unitName": "Square Yard", "unitSymbol": "yd²", "conversionFactor": 0.836127, "description": "Equal to 9 square feet"},
+          {"unitName": "Square Foot", "unitSymbol": "ft²", "conversionFactor": 0.092903, "description": "Equal to 144 square inches"},
+          {"unitName": "Square Inch", "unitSymbol": "in²", "conversionFactor": 0.00064516, "description": "The smallest traditional unit of area in imperial and US customary systems"},
+          {"unitName": "Hectare", "unitSymbol": "ha", "conversionFactor": 10000.0, "description": "Equal to 10,000 square meters, commonly used for land measurement"},
+          {"unitName": "Acre", "unitSymbol": "ac", "conversionFactor": 4046.86, "description": "A traditional unit of land area in the imperial and US customary systems"}
+        ]
+      },
+      {
+        "categoryName": "Angle",
+        "iconName": "angle",
+        "units": [
+          {"unitName": "Degree", "unitSymbol": "°", "conversionFactor": 1.0, "isBase": true, "description": "A measure of an angle, 1/360 of a full rotation"},
+          {"unitName": "Radian", "unitSymbol": "rad", "conversionFactor": 57.2958, "description": "The SI unit of angle, equal to about 57.3 degrees"},
+          {"unitName": "Gradian", "unitSymbol": "grad", "conversionFactor": 0.9, "description": "Also called gon, equal to 1/400 of a full rotation"},
+          {"unitName": "Minute of Arc", "unitSymbol": "′", "conversionFactor": 0.0166667, "description": "Equal to 1/60 of a degree"},
+          {"unitName": "Second of Arc", "unitSymbol": "″", "conversionFactor": 0.000277778, "description": "Equal to 1/60 of a minute of arc or 1/3600 of a degree"},
+          {"unitName": "Revolution", "unitSymbol": "rev", "conversionFactor": 360.0, "description": "A full circle, equal to 360 degrees"}
+        ]
+      }
     ]
   },
   {
-    "categoryName": "Mass",
-    "units": [
-      {"unitName": "Kilogram", "unitSymbol": "kg", "conversionFactor": 1.0, "isBase": true, "description": "The base unit of mass in the International System of Units (SI)"},
-      {"unitName": "Gram", "unitSymbol": "g", "conversionFactor": 0.001, "description": "Equal to one thousandth of a kilogram"},
-      {"unitName": "Milligram", "unitSymbol": "mg", "conversionFactor": 1e-6, "description": "Equal to one thousandth of a gram"},
-      {"unitName": "Metric Ton", "unitSymbol": "t", "conversionFactor": 1000.0, "description": "Equal to 1000 kilograms, used for measuring large masses"},
-      {"unitName": "Pound", "unitSymbol": "lb", "conversionFactor": 0.453592, "description": "An imperial and US customary unit of mass"},
-      {"unitName": "Ounce", "unitSymbol": "oz", "conversionFactor": 0.0283495, "description": "Equal to one sixteenth of a pound"}
+    "categoryGroup": "LIVING",
+    "categories": [
+      {
+        "categoryName": "Volume",
+        "iconName": "cup.and.saucer",
+        "units": [
+          {"unitName": "Liter", "unitSymbol": "L", "conversionFactor": 1.0, "isBase": true, "description": "The metric unit of volume, equal to 1000 cubic centimeters"},
+          {"unitName": "Milliliter", "unitSymbol": "mL", "conversionFactor": 0.001, "description": "Equal to one thousandth of a liter, same as a cubic centimeter"},
+          {"unitName": "Cubic Meter", "unitSymbol": "m³", "conversionFactor": 1000.0, "description": "Equal to 1000 liters"},
+          {"unitName": "Cubic Centimeter", "unitSymbol": "cm³", "conversionFactor": 0.001, "description": "Equal to one milliliter"},
+          {"unitName": "US Gallon", "unitSymbol": "gal (US)", "conversionFactor": 3.78541, "description": "A US customary unit of volume for liquid measurements"},
+          {"unitName": "UK Gallon", "unitSymbol": "gal (UK)", "conversionFactor": 4.54609, "description": "An imperial unit of volume, about 20% larger than the US gallon"},
+          {"unitName": "US Quart", "unitSymbol": "qt (US)", "conversionFactor": 0.946353, "description": "Equal to a quarter of a US gallon"},
+          {"unitName": "UK Quart", "unitSymbol": "qt (UK)", "conversionFactor": 1.13652, "description": "Equal to a quarter of a UK gallon"},
+          {"unitName": "US Pint", "unitSymbol": "pt (US)", "conversionFactor": 0.473176, "description": "Equal to half a US quart"},
+          {"unitName": "UK Pint", "unitSymbol": "pt (UK)", "conversionFactor": 0.568261, "description": "Equal to half a UK quart"},
+          {"unitName": "US Cup", "unitSymbol": "cup (US)", "conversionFactor": 0.236588, "description": "Equal to 8 US fluid ounces"},
+          {"unitName": "Metric Cup", "unitSymbol": "cup (metric)", "conversionFactor": 0.25, "description": "Equal to 250 milliliters"},
+          {"unitName": "US Fluid Ounce", "unitSymbol": "fl oz (US)", "conversionFactor": 0.0295735, "description": "A US customary unit of volume for liquids"},
+          {"unitName": "UK Fluid Ounce", "unitSymbol": "fl oz (UK)", "conversionFactor": 0.0284131, "description": "An imperial unit of volume for liquids"},
+          {"unitName": "US Table Spoon", "unitSymbol": "tbsp (US)", "conversionFactor": 0.0147868, "description": "Equal to 3 teaspoons or half a fluid ounce (US)"},
+          {"unitName": "US Tea Spoon", "unitSymbol": "tsp (US)", "conversionFactor": 0.00492892, "description": "Approximately 5 milliliters"},
+          {"unitName": "Cubic Foot", "unitSymbol": "ft³", "conversionFactor": 28.3168, "description": "Equal to 1728 cubic inches"},
+          {"unitName": "Cubic Inch", "unitSymbol": "in³", "conversionFactor": 0.0163871, "description": "A US customary and imperial unit of volume"}
+        ]
+      },
+      {
+        "categoryName": "Temperature",
+        "iconName": "thermometer",
+        "units": [
+          {"unitName": "Celsius", "unitSymbol": "°C", "conversionFactor": 1.0, "offset": 0.0, "isBase": true, "description": "A metric scale where water freezes at 0° and boils at 100°"},
+          {"unitName": "Fahrenheit", "unitSymbol": "°F", "conversionFactor": 0.5555555555555556, "offset": -32.0, "description": "A scale where water freezes at 32° and boils at 212°"},
+          {"unitName": "Kelvin", "unitSymbol": "K", "conversionFactor": 1.0, "offset": -273.15, "description": "The SI base unit of temperature, starting at absolute zero"}
+        ]
+      },
+      {
+        "categoryName": "Time",
+        "iconName": "clock",
+        "units": [
+          {"unitName": "Second", "unitSymbol": "s", "conversionFactor": 1.0, "isBase": true, "description": "The SI base unit of time"},
+          {"unitName": "Millisecond", "unitSymbol": "ms", "conversionFactor": 0.001, "description": "Equal to one thousandth of a second"},
+          {"unitName": "Microsecond", "unitSymbol": "μs", "conversionFactor": 0.000001, "description": "Equal to one millionth of a second"},
+          {"unitName": "Nanosecond", "unitSymbol": "ns", "conversionFactor": 1e-9, "description": "Equal to one billionth of a second"},
+          {"unitName": "Minute", "unitSymbol": "min", "conversionFactor": 60.0, "description": "Equal to 60 seconds"},
+          {"unitName": "Hour", "unitSymbol": "h", "conversionFactor": 3600.0, "description": "Equal to 60 minutes or 3600 seconds"},
+          {"unitName": "Day", "unitSymbol": "d", "conversionFactor": 86400.0, "description": "Equal to 24 hours or 86,400 seconds"},
+          {"unitName": "Week", "unitSymbol": "wk", "conversionFactor": 604800.0, "description": "Equal to 7 days or 168 hours"},
+          {"unitName": "Month (avg)", "unitSymbol": "mo", "conversionFactor": 2628000.0, "description": "Approximately 30.44 days (average length of a month)"},
+          {"unitName": "Year", "unitSymbol": "yr", "conversionFactor": 31536000.0, "description": "Equal to 365 days or 8,760 hours"}
+        ]
+      },
+      {
+        "categoryName": "Cooking",
+        "iconName": "fork.knife",
+        "units": [
+          {"unitName": "Cup (US)", "unitSymbol": "cup (US)", "conversionFactor": 1.0, "isBase": true, "description": "Standard US cooking measure, equal to 8 fluid ounces"},
+          {"unitName": "Cup (UK)", "unitSymbol": "cup (UK)", "conversionFactor": 1.20095, "description": "Imperial cup measurement used in the UK"},
+          {"unitName": "Cup (Metric)", "unitSymbol": "cup (metric)", "conversionFactor": 1.05669, "description": "250ml metric cup commonly used in Australia, New Zealand, and Canada"},
+          {"unitName": "Tablespoon (US)", "unitSymbol": "tbsp (US)", "conversionFactor": 0.0625, "description": "1/16 of a US cup, equal to 3 teaspoons"},
+          {"unitName": "Teaspoon (US)", "unitSymbol": "tsp (US)", "conversionFactor": 0.0208333, "description": "1/3 of a US tablespoon"},
+          {"unitName": "Fluid Ounce (US)", "unitSymbol": "fl oz (US)", "conversionFactor": 0.125, "description": "1/8 of a US cup"},
+          {"unitName": "Milliliter", "unitSymbol": "ml", "conversionFactor": 0.00422675, "description": "Metric unit commonly used in cooking worldwide"},
+          {"unitName": "Liter", "unitSymbol": "L", "conversionFactor": 4.22675, "description": "1000 milliliters or about 4.23 US cups"},
+          {"unitName": "Pint (US)", "unitSymbol": "pt (US)", "conversionFactor": 2.0, "description": "Equal to 2 US cups"},
+          {"unitName": "Quart (US)", "unitSymbol": "qt (US)", "conversionFactor": 4.0, "description": "Equal to 4 US cups"},
+          {"unitName": "Gallon (US)", "unitSymbol": "gal (US)", "conversionFactor": 16.0, "description": "Equal to 16 US cups"}
+        ]
+      }
     ]
   },
   {
-    "categoryName": "Temperature",
-    "units": [
-      {"unitName": "Celsius", "unitSymbol": "°C", "conversionFactor": 1.0, "offset": 0.0, "isBase": true, "description": "A metric scale where water freezes at 0° and boils at 100°"},
-      {"unitName": "Fahrenheit", "unitSymbol": "°F", "conversionFactor": 0.5555555555555556, "offset": -32.0, "description": "A scale where water freezes at 32° and boils at 212°"},
-      {"unitName": "Kelvin", "unitSymbol": "K", "conversionFactor": 1.0, "offset": -273.15, "description": "The SI base unit of temperature, starting at absolute zero"}
+    "categoryGroup": "SCIENCE",
+    "categories": [
+      {
+        "categoryName": "Speed",
+        "iconName": "speedometer",
+        "units": [
+          {"unitName": "Meters per second", "unitSymbol": "m/s", "conversionFactor": 1.0, "isBase": true, "description": "The SI unit of speed and velocity"},
+          {"unitName": "Kilometers per hour", "unitSymbol": "km/h", "conversionFactor": 0.277778, "description": "Commonly used for vehicle speed in most countries"},
+          {"unitName": "Miles per hour", "unitSymbol": "mph", "conversionFactor": 0.44704, "description": "The standard speed limit unit in the United States and United Kingdom"},
+          {"unitName": "Feet per second", "unitSymbol": "ft/s", "conversionFactor": 0.3048, "description": "Used in some engineering applications"},
+          {"unitName": "Knots", "unitSymbol": "kn", "conversionFactor": 0.514444, "description": "Used in maritime and air navigation, equal to one nautical mile per hour"},
+          {"unitName": "Mach", "unitSymbol": "Mach", "conversionFactor": 343.0, "description": "Speed of sound in air at sea level (approx. 343 m/s at 20°C)"}
+        ]
+      },
+      {
+        "categoryName": "Pressure",
+        "iconName": "gauge",
+        "units": [
+          {"unitName": "Pascal", "unitSymbol": "Pa", "conversionFactor": 1.0, "isBase": true, "description": "The SI unit of pressure, equal to one newton per square meter"},
+          {"unitName": "Kilopascal", "unitSymbol": "kPa", "conversionFactor": 1000.0, "description": "Equal to 1000 pascals"},
+          {"unitName": "Bar", "unitSymbol": "bar", "conversionFactor": 100000.0, "description": "Approximately equal to atmospheric pressure at sea level"},
+          {"unitName": "Atmosphere", "unitSymbol": "atm", "conversionFactor": 101325.0, "description": "Standard atmospheric pressure at sea level"},
+          {"unitName": "Pounds per square inch", "unitSymbol": "psi", "conversionFactor": 6894.76, "description": "Common pressure unit in the US and UK"},
+          {"unitName": "Millimeters of mercury", "unitSymbol": "mmHg", "conversionFactor": 133.322, "description": "Used for blood pressure and meteorological measurements"},
+          {"unitName": "Inches of mercury", "unitSymbol": "inHg", "conversionFactor": 3386.39, "description": "Common unit for barometric pressure in the US"}
+        ]
+      },
+      {
+        "categoryName": "Energy",
+        "iconName": "bolt",
+        "units": [
+          {"unitName": "Joule", "unitSymbol": "J", "conversionFactor": 1.0, "isBase": true, "description": "The SI unit of energy, work, or amount of heat"},
+          {"unitName": "Kilojoule", "unitSymbol": "kJ", "conversionFactor": 1000.0, "description": "Equal to 1000 joules, often used for food energy"},
+          {"unitName": "Calorie", "unitSymbol": "cal", "conversionFactor": 4.184, "description": "The amount of energy needed to raise 1g of water by 1°C"},
+          {"unitName": "Kilocalorie", "unitSymbol": "kcal", "conversionFactor": 4184.0, "description": "Equal to 1000 calories, used in nutrition (food calories)"},
+          {"unitName": "Watt-hour", "unitSymbol": "Wh", "conversionFactor": 3600.0, "description": "Energy equivalent to one watt of power for one hour"},
+          {"unitName": "Kilowatt-hour", "unitSymbol": "kWh", "conversionFactor": 3600000.0, "description": "Common unit of electrical energy equal to 3.6 megajoules"},
+          {"unitName": "Electronvolt", "unitSymbol": "eV", "conversionFactor": 1.602176634e-19, "description": "Energy gained by an electron moving across an electric potential of one volt"},
+          {"unitName": "British Thermal Unit", "unitSymbol": "BTU", "conversionFactor": 1055.06, "description": "Traditional unit of heat in the US and UK"}
+        ]
+      },
+      {
+        "categoryName": "Fuel",
+        "iconName": "fuelpump",
+        "units": [
+          {"unitName": "Miles per gallon (US)", "unitSymbol": "mpg (US)", "conversionFactor": 1.0, "isBase": true, "description": "US standard for fuel efficiency"},
+          {"unitName": "Miles per gallon (UK)", "unitSymbol": "mpg (UK)", "conversionFactor": 1.20095, "description": "UK standard for fuel efficiency (imperial gallons)"},
+          {"unitName": "Kilometers per liter", "unitSymbol": "km/L", "conversionFactor": 0.425144, "description": "Metric measurement of distance per unit volume"},
+          {"unitName": "Liters per 100 kilometers", "unitSymbol": "L/100km", "conversionFactor": 235.215, "description": "European standard for fuel consumption", "isInverse": true}
+        ]
+      }
     ]
   },
-   {
-    "categoryName": "Volume",
-    "units": [
-        {"unitName": "Liter", "unitSymbol": "L", "conversionFactor": 1.0, "isBase": true, "description": "The metric unit of volume, equal to 1000 cubic centimeters"},
-        {"unitName": "Milliliter", "unitSymbol": "mL", "conversionFactor": 0.001, "description": "Equal to one thousandth of a liter"},
-        {"unitName": "US Gallon", "unitSymbol": "gal", "conversionFactor": 3.78541, "description": "A US customary unit of volume for liquid measurements"},
-        {"unitName": "US Quart", "unitSymbol": "qt", "conversionFactor": 0.946353, "description": "Equal to a quarter of a US gallon"},
-        {"unitName": "US Pint", "unitSymbol": "pt", "conversionFactor": 0.473176, "description": "Equal to half a US quart"},
-        {"unitName": "US Cup", "unitSymbol": "cup", "conversionFactor": 0.236588, "description": "Equal to 8 US fluid ounces"},
-        {"unitName": "US Fluid Ounce", "unitSymbol": "fl oz", "conversionFactor": 0.0295735, "description": "A US customary unit of volume for liquids"},
-        {"unitName": "US Table Spoon", "unitSymbol": "tbsp", "conversionFactor": 0.0147868, "description": "Equal to 3 teaspoons or half a fluid ounce"},
-        {"unitName": "US Tea Spoon", "unitSymbol": "tsp", "conversionFactor": 0.00492892, "description": "Approximately 5 milliliters"}
+  {
+    "categoryGroup": "MISC.",
+    "categories": [
+      {
+        "categoryName": "Data",
+        "iconName": "externaldrive",
+        "units": [
+          {"unitName": "Byte", "unitSymbol": "B", "conversionFactor": 1.0, "isBase": true, "description": "The basic unit of digital information (8 bits)"},
+          {"unitName": "Kilobyte", "unitSymbol": "KB", "conversionFactor": 1000.0, "description": "Equal to 1,000 bytes (SI definition)"},
+          {"unitName": "Megabyte", "unitSymbol": "MB", "conversionFactor": 1000000.0, "description": "Equal to 1,000,000 bytes (SI definition)"},
+          {"unitName": "Gigabyte", "unitSymbol": "GB", "conversionFactor": 1000000000.0, "description": "Equal to 1,000,000,000 bytes (SI definition)"},
+          {"unitName": "Terabyte", "unitSymbol": "TB", "conversionFactor": 1000000000000.0, "description": "Equal to 1,000,000,000,000 bytes (SI definition)"},
+          {"unitName": "Kibibyte", "unitSymbol": "KiB", "conversionFactor": 1024.0, "description": "Equal to 1,024 bytes (binary definition)"},
+          {"unitName": "Mebibyte", "unitSymbol": "MiB", "conversionFactor": 1048576.0, "description": "Equal to 1,048,576 bytes (binary definition)"},
+          {"unitName": "Gibibyte", "unitSymbol": "GiB", "conversionFactor": 1073741824.0, "description": "Equal to 1,073,741,824 bytes (binary definition)"},
+          {"unitName": "Tebibyte", "unitSymbol": "TiB", "conversionFactor": 1099511627776.0, "description": "Equal to 1,099,511,627,776 bytes (binary definition)"},
+          {"unitName": "Bit", "unitSymbol": "bit", "conversionFactor": 0.125, "description": "The smallest unit of digital information (1/8 of a byte)"},
+          {"unitName": "Kilobit", "unitSymbol": "Kbit", "conversionFactor": 125.0, "description": "Equal to 1,000 bits (SI definition)"},
+          {"unitName": "Megabit", "unitSymbol": "Mbit", "conversionFactor": 125000.0, "description": "Equal to 1,000,000 bits (SI definition)"},
+          {"unitName": "Gigabit", "unitSymbol": "Gbit", "conversionFactor": 125000000.0, "description": "Equal to 1,000,000,000 bits (SI definition)"}
+        ]
+      },
+      {
+        "categoryName": "Power",
+        "iconName": "bolt.fill",
+        "units": [
+          {"unitName": "Watt", "unitSymbol": "W", "conversionFactor": 1.0, "isBase": true, "description": "The SI unit of power, one joule per second"},
+          {"unitName": "Kilowatt", "unitSymbol": "kW", "conversionFactor": 1000.0, "description": "Equal to 1,000 watts"},
+          {"unitName": "Megawatt", "unitSymbol": "MW", "conversionFactor": 1000000.0, "description": "Equal to 1,000,000 watts"},
+          {"unitName": "Gigawatt", "unitSymbol": "GW", "conversionFactor": 1000000000.0, "description": "Equal to 1,000,000,000 watts"},
+          {"unitName": "Horsepower (mechanical)", "unitSymbol": "hp", "conversionFactor": 745.7, "description": "Approximately 745.7 watts, used for engine power ratings"},
+          {"unitName": "Horsepower (metric)", "unitSymbol": "PS", "conversionFactor": 735.5, "description": "Metric horsepower, approximately 735.5 watts"},
+          {"unitName": "BTU per hour", "unitSymbol": "BTU/h", "conversionFactor": 0.293071, "description": "Common unit for heating and cooling capacity in the US"}
+        ]
+      },
+      {
+        "categoryName": "Frequency",
+        "iconName": "wave.3.right",
+        "units": [
+          {"unitName": "Hertz", "unitSymbol": "Hz", "conversionFactor": 1.0, "isBase": true, "description": "The SI unit of frequency, one cycle per second"},
+          {"unitName": "Kilohertz", "unitSymbol": "kHz", "conversionFactor": 1000.0, "description": "Equal to 1,000 hertz"},
+          {"unitName": "Megahertz", "unitSymbol": "MHz", "conversionFactor": 1000000.0, "description": "Equal to 1,000,000 hertz"},
+          {"unitName": "Gigahertz", "unitSymbol": "GHz", "conversionFactor": 1000000000.0, "description": "Equal to 1,000,000,000 hertz"},
+          {"unitName": "Revolutions per minute", "unitSymbol": "rpm", "conversionFactor": 0.0166667, "description": "Commonly used for rotational speed of machinery"},
+          {"unitName": "Beats per minute", "unitSymbol": "BPM", "conversionFactor": 0.0166667, "description": "Used in music and medicine (heart rate)"}
+        ]
+      },
+      {
+        "categoryName": "Currency",
+        "iconName": "dollarsign.circle",
+        "units": [
+          {"unitName": "US Dollar", "unitSymbol": "USD", "conversionFactor": 1.0, "isBase": true, "description": "The official currency of the United States"},
+          {"unitName": "Euro", "unitSymbol": "EUR", "conversionFactor": 1.09, "description": "The official currency of most countries in the European Union"},
+          {"unitName": "British Pound", "unitSymbol": "GBP", "conversionFactor": 1.27, "description": "The official currency of the United Kingdom"},
+          {"unitName": "Japanese Yen", "unitSymbol": "JPY", "conversionFactor": 0.0069, "description": "The official currency of Japan"},
+          {"unitName": "Canadian Dollar", "unitSymbol": "CAD", "conversionFactor": 0.74, "description": "The official currency of Canada"},
+          {"unitName": "Australian Dollar", "unitSymbol": "AUD", "conversionFactor": 0.66, "description": "The official currency of Australia"},
+          {"unitName": "Swiss Franc", "unitSymbol": "CHF", "conversionFactor": 1.13, "description": "The official currency of Switzerland"},
+          {"unitName": "Chinese Yuan", "unitSymbol": "CNY", "conversionFactor": 0.14, "description": "The official currency of China"},
+          {"unitName": "Indian Rupee", "unitSymbol": "INR", "conversionFactor": 0.012, "description": "The official currency of India"}
+        ]
+      }
     ]
-   },
-   {
-    "categoryName": "Speed",
-    "units": [
-        {"unitName": "Meters per second", "unitSymbol": "m/s", "conversionFactor": 1.0, "isBase": true, "description": "The SI unit of speed and velocity"},
-        {"unitName": "Kilometers per hour", "unitSymbol": "km/h", "conversionFactor": 0.277778, "description": "Commonly used for vehicle speed in most countries"},
-        {"unitName": "Miles per hour", "unitSymbol": "mph", "conversionFactor": 0.44704, "description": "The standard speed limit unit in the United States and United Kingdom"},
-        {"unitName": "Feet per second", "unitSymbol": "ft/s", "conversionFactor": 0.3048, "description": "Used in some engineering applications"},
-        {"unitName": "Knots", "unitSymbol": "kn", "conversionFactor": 0.514444, "description": "Used in maritime and air navigation, equal to one nautical mile per hour"}
-    ]
-   }
+  }
 ] 

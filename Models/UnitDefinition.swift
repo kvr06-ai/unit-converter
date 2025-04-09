@@ -8,6 +8,7 @@ struct UnitDefinition: Codable, Hashable, Identifiable {
     let offset: Double? // Optional offset for temperature conversion
     let isBase: Bool? // Optional flag for base unit
     let description: String? // Optional description of the unit
+    let isInverse: Bool? // Optional flag for inverse units (like L/100km)
 
     // Helper to determine if this unit needs special temperature handling
     var isTemperature: Bool {

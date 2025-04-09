@@ -181,6 +181,22 @@ struct ConverterView: View {
                 .opacity(viewModel.outputValueString.isEmpty ? 0.5 : 1.0)
                 .padding(.horizontal)
                 
+                // View All Results button
+                Button(action: {
+                    logger.debug("View all results button tapped")
+                    viewModel.showingMultiResults = true
+                }) {
+                    Label("View All Results", systemImage: "list.bullet")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color(.systemGray5))
+                        .foregroundColor(.primary)
+                        .cornerRadius(10)
+                }
+                .disabled(viewModel.conversionResults.isEmpty)
+                .opacity(viewModel.conversionResults.isEmpty ? 0.5 : 1.0)
+                .padding(.horizontal)
+                
                 // Feedback button - updated for in-app sheet
                 Button(action: {
                     logger.debug("Feedback button tapped")
@@ -239,6 +255,14 @@ struct ConverterView: View {
                 Button("Cancel", role: .destructive) { }
             } message: {
                 Text("There was a problem sending your feedback. Please try again later.")
+            }
+            // MultiResultView sheet
+            .sheet(isPresented: $viewModel.showingMultiResults) {
+                MultiResultView(
+                    results: viewModel.conversionResults,
+                    inputValue: viewModel.inputValueString,
+                    inputUnit: viewModel.fromUnit
+                )
             }
         } // End NavigationView
         .navigationViewStyle(.stack) // Use stack style for consistency on iPhone

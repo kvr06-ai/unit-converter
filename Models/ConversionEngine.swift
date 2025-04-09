@@ -1,6 +1,26 @@
 import Foundation
 import os.log
 
+struct ConversionResult {
+    let value: Double
+    let unit: UnitDefinition
+    let formattedValue: String
+    
+    init(value: Double, unit: UnitDefinition) {
+        self.value = value
+        self.unit = unit
+        
+        // Format the value based on its magnitude
+        if abs(value) < 0.0001 || abs(value) > 100000 {
+            self.formattedValue = String(format: "%.5e", value)
+        } else if abs(value - Double(Int(value))) < 0.00001 {
+            self.formattedValue = String(format: "%.0f", value)
+        } else {
+            self.formattedValue = String(format: "%.5g", value)
+        }
+    }
+}
+
 struct ConversionEngine {
     // Logger instance for tracking conversion operations
     private let logger = Logger(subsystem: "com.converter.app", category: "ConversionEngine")
@@ -21,7 +41,21 @@ struct ConversionEngine {
             return Double.nan // Not a Number indicates error
         }
         
-        let outputValue = baseValue / outputUnit.conversionFactor
+        var outputValue = baseValue / outputUnit.conversionFactor
+        
+        // Handle inverse units (like L/100km)
+        if inputUnit.isInverse != true && outputUnit.isInverse == true {
+            // When converting to an inverse unit (e.g. MPG to L/100km), we need to invert
+            if outputValue != 0 {
+                outputValue = 1.0 / outputValue
+            }
+        } else if inputUnit.isInverse == true && outputUnit.isInverse != true {
+            // When converting from an inverse unit to a non-inverse unit
+            if value != 0 {
+                outputValue = baseValue * (1.0 / value)
+            }
+        }
+        
         logger.debug("Output value: \(outputValue)")
         
         let timeElapsed = Date().timeIntervalSince(startTime)
@@ -62,7 +96,7 @@ struct ConversionEngine {
         return outputValue
     }
 
-    // Public conversion function
+    // Public conversion function for a single unit
     func convert(value: Double, from inputUnit: UnitDefinition, to outputUnit: UnitDefinition) -> Double? {
         let startTime = Date()
         logger.debug("Beginning conversion from \(inputUnit.unitName) to \(outputUnit.unitName)")
@@ -94,5 +128,30 @@ struct ConversionEngine {
         logger.debug("Total conversion completed in \(timeElapsed) seconds")
         
         return result
+    }
+    
+    // Convert to all units in a category
+    func convertToAllUnits(value: Double, from inputUnit: UnitDefinition, units: [UnitDefinition]) -> [ConversionResult] {
+        let startTime = Date()
+        logger.debug("Beginning multi-unit conversion from \(inputUnit.unitName) to \(units.count) units")
+        
+        var results: [ConversionResult] = []
+        
+        for outputUnit in units {
+            // Skip if it's the same as the input unit
+            if outputUnit.id == inputUnit.id {
+                results.append(ConversionResult(value: value, unit: inputUnit))
+                continue
+            }
+            
+            if let convertedValue = convert(value: value, from: inputUnit, to: outputUnit) {
+                results.append(ConversionResult(value: convertedValue, unit: outputUnit))
+            }
+        }
+        
+        let timeElapsed = Date().timeIntervalSince(startTime)
+        logger.debug("Total multi-unit conversion completed in \(timeElapsed) seconds")
+        
+        return results
     }
 } 
