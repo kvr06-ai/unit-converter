@@ -11,6 +11,7 @@ struct ConverterView: View {
     @StateObject private var viewModel = ConverterViewModel()
     @FocusState private var inputIsFocused: Bool // To control keyboard focus
     @State private var showCopied: Bool = false // For copy feedback animation
+    @State private var showFeedbackAlert: Bool = false // Alert for when email can't be sent
     
     // Track when view appears for performance monitoring
     @State private var viewDidAppear = false
@@ -178,6 +179,26 @@ struct ConverterView: View {
                 .opacity(viewModel.outputValueString.isEmpty ? 0.5 : 1.0)
                 .padding(.horizontal)
                 
+                // Feedback button
+                Button(action: {
+                    sendFeedback()
+                }) {
+                    HStack {
+                        Image(systemName: "envelope")
+                            .font(.caption)
+                        Text("Send Feedback")
+                            .font(.caption)
+                    }
+                    .padding(8)
+                    .foregroundColor(.gray)
+                }
+                .padding(.top, 4)
+                .alert("Cannot Send Email", isPresented: $showFeedbackAlert) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text("Your device is not configured to send email. Please make sure you have the Mail app set up, or you can send feedback directly to fs.kvr06@gmail.com")
+                }
+                
                 Spacer()
             }
             .navigationTitle("Unit Converter")
@@ -202,8 +223,6 @@ struct ConverterView: View {
                         viewModel.unitSelected(selectedUnit)
                     }
                 )
-                 // Consider presentation detents for more flexible sheet height on iOS 16+
-                 // .presentationDetents([.medium, .large])
             }
         } // End NavigationView
         .navigationViewStyle(.stack) // Use stack style for consistency on iPhone
@@ -219,6 +238,35 @@ struct ConverterView: View {
                     logger.debug("ConverterView fully rendered in \(timeElapsed) seconds")
                 }
             }
+        }
+    }
+    
+    // Function to handle sending feedback via email
+    private func sendFeedback() {
+        logger.debug("Send feedback button tapped")
+        
+        // Device info for better feedback
+        let device = UIDevice.current
+        let systemVersion = device.systemVersion
+        let model = device.model
+        
+        // Create email content
+        let recipient = "fs.kvr06@gmail.com"
+        let subject = "Unit Converter App Feedback"
+        let body = "Hi,\n\nI'd like to provide feedback about the Unit Converter app.\n\n-- Please add your feedback here --\n\n\nDevice information:\n\(model) iOS \(systemVersion)"
+        
+        // URL encode components
+        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let encodedBody = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        // Create mailto URL
+        let mailtoString = "mailto:\(recipient)?subject=\(encodedSubject)&body=\(encodedBody)"
+        
+        if let mailtoURL = URL(string: mailtoString), UIApplication.shared.canOpenURL(mailtoURL) {
+            UIApplication.shared.open(mailtoURL, options: [:], completionHandler: nil)
+        } else {
+            // Show alert if mail can't be sent (e.g., no mail account configured)
+            showFeedbackAlert = true
         }
     }
 }
