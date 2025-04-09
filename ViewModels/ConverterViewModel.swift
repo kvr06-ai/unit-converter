@@ -294,7 +294,7 @@ class ConverterViewModel: ObservableObject {
                  // If category wasn't saved/found, but units were, try finding the category from the unit
                  if let (foundUnit, foundCategory) = unitDataStore.findUnit(symbol: inputSymbol) {
                      logger.debug("Setting category based on found input unit")
-                     self.selectedCategory = categories.first(where: { $0.name == foundCategory.categoryName })
+                     self.selectedCategory = self.categories.first(where: { $0.name == foundCategory.categoryName })
                      self.fromUnit = foundUnit
                  }
              }

@@ -18,11 +18,14 @@ struct CategorySelector: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
                 ForEach(categories) { category in
+                    let categoryId = category.id
+                    let categoryName = category.name
+                    
                     CategoryButton(
                         category: category,
-                        isSelected: viewModel.selectedCategory?.id == category.id,
+                        isSelected: viewModel.selectedCategory?.id == categoryId,
                         action: {
-                            logger.debug("Category selected: \(category.name)")
+                            logger.debug("Category selected: \(categoryName)")
                             viewModel.selectedCategory = category
                         }
                     )

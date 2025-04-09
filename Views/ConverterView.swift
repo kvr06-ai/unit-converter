@@ -38,7 +38,7 @@ struct ConverterView: View {
                                 .background(Color(.systemGray6))
                                 .cornerRadius(10)
                                 .accessibilityLabel("Input value")
-                                .onChange(of: inputIsFocused) { newValue in
+                                .onChange(of: inputIsFocused) { oldValue, newValue in
                                     logger.debug("Input field focus changed: \(newValue)")
                                 }
                             
