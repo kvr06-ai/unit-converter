@@ -11,7 +11,8 @@ struct CategorySelector: View {
     init(viewModel: ConverterViewModel) {
         self.viewModel = viewModel
         self.categories = viewModel.categories
-        logger.debug("CategorySelector initialized with \(categories.count) categories")
+        let count = viewModel.categories.count
+        logger.debug("CategorySelector initialized with \(count) categories")
     }
     
     var body: some View {

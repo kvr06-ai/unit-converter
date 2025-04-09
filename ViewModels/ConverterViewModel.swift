@@ -339,7 +339,7 @@ class ConverterViewModel: ObservableObject {
             Category(id: unitCategory.id, name: unitCategory.categoryName, iconName: getCategoryIcon(for: unitCategory.categoryName), units: unitCategory.units)
         }
         
-        logger.debug("Set up \(categories.count) categories")
+        logger.debug("Set up \(self.categories.count) categories")
         
         // Default to first category
         if let firstCategory = categories.first {
