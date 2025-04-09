@@ -78,17 +78,10 @@ struct ConverterView: View {
                 }
                 .padding(.horizontal)
                 
-                // Visual conversion direction indicator
-                HStack {
-                    Spacer()
-                    Image(systemName: "arrow.down")
-                        .font(.title2)
-                        .foregroundColor(.accentColor)
-                        .padding(8)
-                        .background(Circle().fill(Color.accentColor.opacity(0.1)))
-                    Spacer()
-                }
-                .padding(.vertical, 8)
+                // Visual conversion direction indicator - REMOVED BLUE ARROW
+                // Now using empty space with padding to maintain layout spacing
+                Spacer()
+                    .frame(height: 16)
                 
                 // Output section
                 VStack(alignment: .leading, spacing: 8) {
@@ -188,10 +181,12 @@ struct ConverterView: View {
                 Spacer()
             }
             .navigationTitle("Unit Converter")
+            // Apply the gesture recognizer to the entire navigation view content
+            .contentShape(Rectangle())
             .onTapGesture {
-                // Dismiss keyboard when tapping anywhere in the main content area
+                // Dismiss keyboard when tapping anywhere
                 if inputIsFocused {
-                    logger.debug("Main content tapped, dismissing keyboard")
+                    logger.debug("View tapped, dismissing keyboard")
                     inputIsFocused = false
                 }
             }
