@@ -6,154 +6,183 @@ struct ConverterView: View {
     // Use @StateObject to create and keep the ViewModel alive for the lifetime of the view
     @StateObject private var viewModel = ConverterViewModel()
     @FocusState private var inputIsFocused: Bool // To control keyboard focus
+    @State private var showCopied: Bool = false // For copy feedback animation
 
     var body: some View {
-        NavigationView { // Embed in NavigationView for title and potential future navigation
-            Form { // Using Form for standard iOS styling and spacing
-                // MARK: - Category Selection
-                Section(header: Text("Category")) {
-                    Picker("Select Category", selection: $viewModel.selectedCategory) {
-                        ForEach(viewModel.allCategories) { category in
-                            Text(category.categoryName).tag(category as UnitCategory?) // Tag must match selection type
+        NavigationView {
+            // Replace Form with a VStack for more control over spacing
+            VStack(spacing: 16) {
+                // Category selection with horizontal scrolling chips
+                CategorySelector(viewModel: viewModel)
+                    .padding(.horizontal)
+                
+                // Input section
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Input")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                    
+                    VStack(spacing: 16) {
+                        ZStack(alignment: .trailing) {
+                            TextField("Enter a value", text: $viewModel.inputValueString)
+                                .keyboardType(.decimalPad)
+                                .focused($inputIsFocused) // Connect TextField to focus state
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(10)
+                                .accessibilityLabel("Input value")
+                            
+                            if !viewModel.inputValueString.isEmpty {
+                                Button(action: {
+                                    viewModel.clearInput()
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.gray)
+                                        .padding(.trailing, 16)
+                                }
+                                .transition(.opacity)
+                                .animation(.easeInOut, value: !viewModel.inputValueString.isEmpty)
+                                .accessibilityLabel("Clear input")
+                            }
                         }
-                    }
-                    .pickerStyle(.menu) // Or .automatic, .inline etc.
-                    .labelsHidden() // Hide the "Select Category" label visually
-                }
-
-                // MARK: - Input Section
-                Section(header: Text("From")) {
-                    HStack {
-                        // Use a manual binding that calls updateInputValue on change
-                        TextField("Enter value", text: Binding(
-                            get: { viewModel.inputValueString },
-                            set: { viewModel.updateInputValue($0) }
-                        ))
-                            .font(.system(size: 24, weight: .regular)) // Larger font for value
-                            .keyboardType(.decimalPad)
-                            .focused($inputIsFocused)
-                            .toolbar { // Add toolbar for Done button
-                                ToolbarItemGroup(placement: .keyboard) {
-                                    Spacer() // Push button to the right
-                                    Button("Done") {
-                                        inputIsFocused = false // Dismiss keyboard
-                                    }
+                        
+                        HStack {
+                            Picker("From Unit", selection: $viewModel.fromUnit) {
+                                ForEach(viewModel.availableUnits) { unit in
+                                    Text(unit.unitSymbol).tag(unit)
                                 }
                             }
-                            .accessibilityLabel("Input value")
-
-                        Spacer() // Pushes unit selector to the right
-
-                        Button {
-                            viewModel.unitSelectorTapped(isInput: true)
-                        } label: {
-                            VStack(alignment: .trailing) {
-                                Text(viewModel.selectedInputUnit?.unitName ?? "Select Unit")
-                                    .font(.headline)
-                                Text(viewModel.selectedInputUnit?.unitSymbol ?? "-")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                            .padding(.vertical, 4)
+                            .pickerStyle(MenuPickerStyle())
+                            .padding(10)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(10)
+                            
+                            Spacer()
+                            
+                            Text(viewModel.fromUnit?.unitSymbol ?? "")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 8)
                         }
-                        .buttonStyle(.plain) // Use plain style to avoid default button appearance in Form
-                        .accessibilityLabel("Select input unit")
-                        .accessibilityHint("Opens the unit selection screen")
-
                     }
-                     // Clear Button (Optional, could be integrated differently)
-                     if !viewModel.inputValueString.isEmpty {
-                         HStack {
-                              Spacer()
-                              Button("Clear") {
-                                  viewModel.clearInput()
-                              }
-                              .buttonStyle(.borderless) // Less prominent style
-                              .foregroundColor(.red)
-                         }
-                     }
                 }
-
-                // MARK: - Swap Button
+                .padding(.horizontal)
+                
+                // Visual conversion direction indicator
                 HStack {
-                   Spacer()
-                   Button {
-                       viewModel.swapUnits()
-                       // Optionally provide haptic feedback
-                       #if canImport(UIKit)
-                       UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                       #endif
-                   } label: {
-                       Image(systemName: "arrow.up.arrow.down.circle.fill")
-                           .font(.title)
-                           .foregroundColor(.accentColor) // Use theme color
-                   }
-                   .accessibilityLabel("Swap input and output units")
-                   Spacer()
+                    Spacer()
+                    Image(systemName: "arrow.down")
+                        .font(.title2)
+                        .foregroundColor(.accentColor)
+                        .padding(8)
+                        .background(Circle().fill(Color.accentColor.opacity(0.1)))
+                    Spacer()
                 }
-                .padding(.vertical, -5) // Adjust spacing around swap button
-
-
-                // MARK: - Output Section
-                Section(header: Text("To")) {
-                     HStack {
-                        // Use Text for output as it's not directly editable
-                        Text(viewModel.outputValueString.isEmpty ? " " : viewModel.outputValueString) // Show space if empty to maintain height
-                            .font(.system(size: 24, weight: .bold))
-                            .lineLimit(1)
-                             .minimumScaleFactor(0.5) // Allow text to shrink if needed
-                             .frame(maxWidth: .infinity, alignment: .leading) // Take available width
-                            .contentTransition(.numericText(countsDown: false)) // Animate changes smoothly
-                             .animation(.easeInOut, value: viewModel.outputValueString)
-                             .accessibilityLabel("Output value")
-                             .accessibilityValue(viewModel.outputValueString)
-
-
-                        Spacer() // Pushes unit selector to the right
-
-                         Button {
-                             viewModel.unitSelectorTapped(isInput: false)
-                         } label: {
-                             VStack(alignment: .trailing) {
-                                 Text(viewModel.selectedOutputUnit?.unitName ?? "Select Unit")
-                                     .font(.headline)
-                                 Text(viewModel.selectedOutputUnit?.unitSymbol ?? "-")
-                                     .font(.subheadline)
-                                     .foregroundColor(.secondary)
-                             }
-                            .padding(.vertical, 4)
-                         }
-                         .buttonStyle(.plain)
-                         .accessibilityLabel("Select output unit")
-                         .accessibilityHint("Opens the unit selection screen")
-                     }
-                     // Copy Button (Integrated with output text)
-                     .contentShape(Rectangle()) // Make HStack tappable
-                     .onTapGesture {
-                        // Simple tap-to-copy for output
-                         #if canImport(UIKit)
-                         if !viewModel.outputValueString.isEmpty && viewModel.outputValueString != "Error" {
-                             UIPasteboard.general.string = viewModel.outputValueString
-                             // Optional: Show brief confirmation like a subtle overlay or haptic feedback
-                             UINotificationFeedbackGenerator().notificationOccurred(.success)
-                         }
-                         #endif
-                     }
-                     .accessibilityHint("Tap to copy output value")
-
+                .padding(.vertical, 8)
+                
+                // Output section
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Output")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                        
+                    VStack(spacing: 16) {
+                        ZStack(alignment: .trailing) {
+                            Text(viewModel.outputValueString.isEmpty ? "Result will appear here" : viewModel.outputValueString)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
+                                .background(Color(.systemGray6))
+                                .cornerRadius(10)
+                                .foregroundColor(viewModel.outputValueString.isEmpty ? .gray : .primary)
+                            
+                            if showCopied {
+                                Text("Copied!")
+                                    .font(.caption)
+                                    .padding(6)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(4)
+                                    .padding(.trailing, 16)
+                                    .transition(.scale(scale: 0.8).combined(with: .opacity))
+                            }
+                        }
+                        
+                        HStack {
+                            Picker("To Unit", selection: $viewModel.toUnit) {
+                                ForEach(viewModel.availableUnits) { unit in
+                                    Text(unit.unitSymbol).tag(unit)
+                                }
+                            }
+                            .pickerStyle(MenuPickerStyle())
+                            .padding(10)
+                            .background(Color(.systemGray6))
+                            .cornerRadius(10)
+                            
+                            Spacer()
+                            
+                            Text(viewModel.toUnit?.unitSymbol ?? "")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 8)
+                        }
+                    }
                 }
-
-
-            } // End Form
+                .padding(.horizontal)
+                
+                // Swap Units button
+                Button(action: {
+                    viewModel.swapUnits()
+                }) {
+                    Label("Swap Units", systemImage: "arrow.left.arrow.right")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding(.horizontal)
+                .padding(.top, 8)
+                
+                // Copy button with animation feedback
+                Button(action: {
+                    UIPasteboard.general.string = viewModel.outputValueString
+                    
+                    // Show and hide the "Copied!" message
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        showCopied = true
+                    }
+                    
+                    // Provide haptic feedback
+                    let generator = UIImpactFeedbackGenerator(style: .medium)
+                    generator.impactOccurred()
+                    
+                    // Auto-hide the copied message after 1.5 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        withAnimation {
+                            showCopied = false
+                        }
+                    }
+                }) {
+                    Label("Copy Result", systemImage: "doc.on.doc")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color(.systemGray5))
+                        .foregroundColor(.primary)
+                        .cornerRadius(10)
+                }
+                .disabled(viewModel.outputValueString.isEmpty)
+                .opacity(viewModel.outputValueString.isEmpty ? 0.5 : 1.0)
+                .padding(.horizontal)
+                
+                Spacer()
+            }
             .navigationTitle("Unit Converter")
             // Present the Unit Selection View as a sheet
             .sheet(isPresented: $viewModel.showingUnitSelector) {
                 // Pass the necessary data and actions to the selection view
                 UnitSelectionView(
-                    allCategories: viewModel.allCategories,
+                    allCategories: viewModel.unitCategories,
                     availableUnits: viewModel.availableUnits,
-                    selectedCategory: $viewModel.selectedCategory, // Binding for category changes
-                    currentlySelectedUnit: viewModel.selectingForInput ? viewModel.selectedInputUnit : viewModel.selectedOutputUnit,
+                    selectedCategory: viewModel.selectedUnitCategoryBinding(),
+                    currentlySelectedUnit: viewModel.selectingForInput ? viewModel.fromUnit : viewModel.toUnit,
                     onUnitSelected: { selectedUnit in
                         viewModel.unitSelected(selectedUnit)
                     }
@@ -161,18 +190,53 @@ struct ConverterView: View {
                  // Consider presentation detents for more flexible sheet height on iOS 16+
                  // .presentationDetents([.medium, .large])
             }
-            // Dismiss keyboard when tapping outside the TextField
-             .onTapGesture {
-                 inputIsFocused = false
-             }
-
         } // End NavigationView
         .navigationViewStyle(.stack) // Use stack style for consistency on iPhone
-
+        // Add a tap gesture to the entire view to dismiss keyboard
+        .contentShape(Rectangle()) 
+        .onTapGesture {
+            inputIsFocused = false
+        }
     }
 }
 
 // MARK: - Preview
 #Preview { // Using the new #Preview macro
     ConverterView()
+}
+
+// MARK: - Helper Components
+
+// Horizontal scrollable category selector with chips
+struct CategorySelector: View {
+    @ObservedObject var viewModel: ConverterViewModel
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                ForEach(viewModel.categories) { category in
+                    Button(action: {
+                        viewModel.selectedCategory = category
+                    }) {
+                        Text(category.name)
+                            .font(.system(size: 15, weight: .medium))
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(isSelected(category) ? Color.accentColor : Color.gray.opacity(0.15))
+                            )
+                            .foregroundColor(isSelected(category) ? .white : .primary)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .animation(.easeInOut(duration: 0.2), value: isSelected(category))
+                }
+            }
+            .padding(.vertical, 8)
+        }
+    }
+    
+    private func isSelected(_ category: Category) -> Bool {
+        return viewModel.selectedCategory?.id == category.id
+    }
 } 

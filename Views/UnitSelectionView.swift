@@ -49,12 +49,18 @@ struct UnitSelectionView: View {
                 // MARK: - Unit List
                 List(searchResults) { unit in
                     HStack {
-                        VStack(alignment: .leading) {
+                        VStack(alignment: .leading, spacing: 2) {
                             Text(unit.unitName)
                                 .font(.headline)
                             Text(unit.unitSymbol)
                                 .font(.subheadline)
                                 .foregroundColor(.gray)
+                            if let description = unit.description, !description.isEmpty {
+                                Text(description)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(2)
+                            }
                         }
                         Spacer()
                         // Show checkmark for the currently selected unit in the main view
