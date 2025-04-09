@@ -89,9 +89,21 @@ This app follows the **Model-View-ViewModel (MVVM)** design pattern:
 - Favorite units for quick access
 - Custom unit creation
 - Dark mode and theme options
-- Currency conversion (with live exchange rates)
+- Live currency conversion with API integration (current version includes static reference rates)
 - iPad-optimized layout
 - watchOS companion app
+
+## 💱 Currency Conversion
+
+The app includes currency conversion functionality with a practical approach:
+
+- **Comprehensive Coverage**: Conversion between major world currencies
+- **Reference Rates**: Well-documented static conversion rates with source information
+- **Works Offline**: No internet connection required for conversions
+- **Clear Timestamps**: All rates include "as of [date]" information
+- **Intuitive Interface**: Currencies organized by region with symbols and flags
+
+*Note: Future versions will include live API-based rates while maintaining offline functionality*
 
 ## 🧑‍💻 Development
 
