@@ -336,8 +336,8 @@ struct FeedbackFormView: View {
         let device = UIDevice.current
         let deviceInfo = "\(device.model) iOS \(device.systemVersion)"
         
-        // Create request
-        guard let url = URL(string: "https://formspree.io/f/fs.kvr06@gmail.com") else {
+        // Create request to Formspree with the user's actual form endpoint
+        guard let url = URL(string: "https://formspree.io/f/mrbprzwk") else {
             handleSubmissionError()
             return
         }
@@ -346,12 +346,13 @@ struct FeedbackFormView: View {
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        // Prepare the form data
+        // Prepare the form data - Formspree will forward this to your email
         let formData: [String: String] = [
             "feedback": feedback,
             "email": emailAddress,
             "device": deviceInfo,
-            "_subject": "Unit Converter App Feedback"
+            "_subject": "Unit Converter App Feedback",
+            "_replyto": emailAddress.isEmpty ? "No email provided" : emailAddress
         ]
         
         // Serialize to JSON
@@ -363,31 +364,36 @@ struct FeedbackFormView: View {
             return
         }
         
-        // Simulate network request (in a real app, we'd use a service like Formspree or a custom backend)
-        // For demo purposes, we'll simulate success after a delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            // Simulate success (to actually implement, use URLSession to make the network request)
-            isSubmitting = false
-            isPresented = false
-            
-            // Show thanks message
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                showThanks = true
+        // Make the actual network request
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                isSubmitting = false
+                
+                if let error = error {
+                    logger.error("Network error: \(error.localizedDescription)")
+                    handleSubmissionError()
+                    return
+                }
+                
+                // Check for successful response
+                if let httpResponse = response as? HTTPURLResponse, 
+                   (200...299).contains(httpResponse.statusCode) {
+                    // Success
+                    isPresented = false
+                    
+                    // Show thanks message
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        showThanks = true
+                    }
+                    
+                    logger.debug("Feedback sent successfully")
+                } else {
+                    // Server returned an error
+                    logger.error("Server error: \(String(describing: response))")
+                    handleSubmissionError()
+                }
             }
-            
-            // In real implementation, send to a backend or service like:
-            // URLSession.shared.dataTask(with: request) { data, response, error in
-            //     DispatchQueue.main.async {
-            //         isSubmitting = false
-            //         if error != nil || (response as? HTTPURLResponse)?.statusCode != 200 {
-            //             handleSubmissionError()
-            //         } else {
-            //             isPresented = false
-            //             showThanks = true
-            //         }
-            //     }
-            // }.resume()
-        }
+        }.resume()
     }
     
     private func handleSubmissionError() {
