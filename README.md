@@ -3,83 +3,121 @@
 [![Swift Version](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org/)
 [![Platform](https://img.shields.io/badge/Platform-iOS%2016.0%2B-blue.svg)](https://developer.apple.com/ios/)
 [![Architecture](https://img.shields.io/badge/Architecture-MVVM-green.svg)](#architecture)
-[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE) <!-- Optional: Add a LICENSE file -->
+[![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
 
-A simple and fast unit conversion utility designed for iOS, built purely with SwiftUI.
+A powerful, intuitive unit conversion app designed to simplify your daily calculations with a clean, modern interface.
 
-## Features (v1.0)
+## ✨ What Makes This App Special
 
-*   **Wide Range of Categories:** Convert between common units for:
-    *   Length
-    *   Mass
-    *   Temperature (Celsius, Fahrenheit, Kelvin)
-    *   Volume
-    *   Speed
-    *   *(More categories like Area, Time, Data Storage can be easily added)*
-*   **Instant Results:** Output updates automatically as you type or change units.
-*   **Easy Unit Selection:** Tap to select input/output units from the current category via a searchable sheet.
-*   **Category Switching:** Quickly switch between unit categories (e.g., Length to Mass) using a dropdown menu.
-*   **Swap Units:** Instantly swap the 'From' and 'To' units with a single tap.
-*   **Clear Input:** Easily clear the current input value.
-*   **Tap-to-Copy:** Tap the output value to copy it to the clipboard.
-*   **State Persistence:** Remembers the last used category and units for convenience (`UserDefaults`).
-*   **Decimal Pad:** Uses the appropriate keyboard for numeric input.
+- **Organized Unit Groups**: Units are logically arranged in groups (Basic, Science, Misc) for faster, more intuitive navigation
+- **Multi-Unit Results View**: See conversions to ALL units in a category at once - save time and avoid switching back and forth
+- **Rich Unit Descriptions**: Learn what each unit actually represents with detailed descriptions
+- **Smart Conversion Engine**: Special handling for temperature units and inverse conversions (like L/100km)
+- **Remember Your Preferences**: The app remembers your most recently used categories and units
 
-## Screenshots (Conceptual)
+## 📱 Screenshots
 
-*(Add screenshots here once the UI is visually complete)*
+<div align="center">
+  <p>
+    <img src="Demo screenshots/IMG_0492.PNG" width="200" alt="Main Conversion Screen"/>
+    <img src="Demo screenshots/IMG_0493.PNG" width="200" alt="Multi-unit Results View"/>
+    <img src="Demo screenshots/IMG_0494.PNG" width="200" alt="Category Selection"/>
+    <img src="Demo screenshots/IMG_0495.PNG" width="200" alt="Unit Selection with Descriptions"/>
+  </p>
+</div>
 
-*   *Main conversion screen showing input/output.*
-*   *Unit selection sheet showing searchable units for a category.*
+## 🎯 User Benefits
 
-## Architecture
+### Save Time
+- **Quick Category Navigation**: Find units faster with our intuitive category groups
+- **See All Results at Once**: No more switching between units - see all possible conversions with one tap
+- **Instant Calculations**: Results update in real-time as you type
+
+### Improve Understanding
+- **Learn About Units**: Each unit includes a helpful description
+- **Clear Visual Hierarchy**: Clean design helps you focus on what matters
+- **Intuitive Controls**: Easily swap units, copy results, and navigate between categories
+
+### Enhanced Functionality
+- **Comprehensive Coverage**: Convert between units across multiple categories
+- **Special Conversion Types**: Proper handling of temperature and inverse units
+- **Smart Memory**: The app remembers your preferences for a more personalized experience
+
+## 📊 Supported Categories
+
+This app supports a wide range of unit categories to cover your everyday needs:
+
+- **Measurement**
+  - Length
+  - Mass/Weight
+  - Volume
+  - Area
+  - Temperature
+  
+- **Time & Speed**
+  - Time
+  - Speed
+  - Acceleration
+  
+- **Technical Units**
+  - Data Storage
+  - Energy
+  - Power
+  - Pressure
+  - Fuel Economy
+
+## 🔍 How It Works
+
+1. **Select a Category Group**: Choose from Basic, Science, or Misc
+2. **Pick a Category**: Select from options like Length, Temperature, etc.
+3. **Enter Your Value**: Type in the number you want to convert
+4. **View the Result**: See the converted value instantly
+5. **Explore All Conversions**: Tap "View All Results" to see all possible conversions
+
+## ⚙️ Technology & Architecture
 
 This app follows the **Model-View-ViewModel (MVVM)** design pattern:
 
-*   **Model:** Represents the data and business logic.
-    *   `UnitDefinition.swift`: Defines a single unit (name, symbol, factor, offset).
-    *   `UnitCategory.swift`: Defines a category containing multiple `UnitDefinition`s.
-    *   `Units.json`: Data file storing all categories and units, bundled with the app.
-    *   `UnitDataStore.swift`: Singleton responsible for loading and providing access to the unit data from `Units.json`.
-    *   `ConversionEngine.swift`: Struct containing the core logic for performing conversions, including special handling for temperature.
-*   **View:** Represents the UI elements (SwiftUI Views).
-    *   `ConverterView.swift`: The main screen displaying input/output panels, category picker, unit selectors, and action buttons.
-    *   `UnitSelectionView.swift`: A modal sheet view for selecting categories and units, including search functionality.
-*   **ViewModel:** Acts as the intermediary between Model and View.
-    *   `ConverterViewModel.swift`: An `ObservableObject` that holds the state for `ConverterView` (input/output values, selected units/category), handles user actions, interacts with `ConversionEngine` and `UnitDataStore`, and manages saving/loading preferences via `UserDefaults`.
+- **Built with SwiftUI**: Modern, declarative UI framework from Apple
+- **Clean Architecture**: Separation of concerns for better maintainability
+- **JSON Data Structure**: Easily extensible unit definitions
+- **Combine Framework**: Reactive updates for a responsive experience
 
-## Technology Stack
+## 🚀 Future Enhancements
 
-*   **Language:** Swift (latest stable)
-*   **UI Framework:** SwiftUI
-*   **Architecture:** MVVM
-*   **Data Persistence:** Bundled JSON (`Units.json`), `UserDefaults`
-*   **Concurrency:** Combine (for `@Published` state), `@MainActor`
+- History tracking of recent conversions
+- Favorite units for quick access
+- Custom unit creation
+- Dark mode and theme options
+- Currency conversion (with live exchange rates)
+- iPad-optimized layout
+- watchOS companion app
 
-## Getting Started
+## 🧑‍💻 Development
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/kvr06-ai/unit-converter.git
-    cd unit-converter
-    ```
-2.  **Open in Xcode:** Open the `UnitConverter.xcodeproj` file (You will need to create this project file first in the `app-development/unit-converter` directory and add all the generated Swift files, `Units.json`, and the directory structure).
-3.  **Build & Run:** Select an iOS Simulator or connect a device and run the app (Cmd+R).
+### Getting Started
 
-## Future Enhancements (Post v1.0)
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/kvr06-ai/unit-converter.git
+   cd unit-converter
+   ```
+2. **Open in Xcode:** Open the `UnitConverter.xcodeproj` file
+3. **Build & Run:** Select an iOS Simulator or connect a device and run the app (Cmd+R)
 
-*   History tracking
-*   Favorite units
-*   Custom unit creation
-*   Themes/Appearance settings
-*   Currency conversion (requires network access)
-*   iPad-specific layout
-*   watchOS companion app
+### Project Structure
 
-## Contributing
+- **Models**: Unit definitions, categories, and conversion logic
+- **Views**: SwiftUI interface components
+- **ViewModels**: State management and business logic
+- **Resources**: JSON data files and assets
 
-Contributions are welcome! Please feel free to submit a Pull Request or open an Issue. (Optional: Add specific contribution guidelines if desired).
+## 📄 License
 
-## License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-This project is licensed under the MIT License - see the LICENSE file for details (Optional: Create a LICENSE file). 
+---
+
+<div align="center">
+  <p><em>Need a fast, intuitive unit converter? Download today!</em></p>
+</div> 
